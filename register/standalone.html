@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration - Poornima</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Heading */
+        .main-heading {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: 3px;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-heading {
+            font-size: 1.5rem;
+            color: #4338ca;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #c7d2fe;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+
+        .form-group label.required::after {
+            content: " *";
+            color: #ef4444;
+        }
+
+        /* Input Styles */
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f9fafb;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        input[type="url"]:hover,
+        input[type="number"]:hover,
+        select:hover {
+            border-color: #9ca3af;
+        }
+
+        /* Radio Buttons */
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+
+        .radio-label input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .radio-label span {
+            font-size: 1rem;
+        }
+
+        /* File Upload */
+        .file-upload-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .file-label:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .file-name {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .file-hint {
+            display: block;
+            margin-top: 5px;
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        /* Error Messages */
+        .error-message {
+            display: block;
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            min-height: 20px;
+        }
+
+        /* Submit Button */
+        .submit-wrapper {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .submit-btn {
+            padding: 15px 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            font-size: 1.1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .main-heading {
+                font-size: 2rem;
+            }
+
+            .section-heading {
+                font-size: 1.3rem;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .submit-btn {
+                width: 100%;
+                padding: 15px 30px;
+            }
+
+            body {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-heading {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+
+        /* Smooth Transitions for Dynamic Fields */
+        #otherCollegeGroup,
+        #poornimaSection,
+        #hostelNameGroup,
+        #teamFields {
+            transition: all 0.3s ease;
+        }
+
+        /* Accessibility */
+        input:focus,
+        select:focus,
+        button:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-heading">REGISTER</h1>
+        
+        <form id="registrationForm" class="registration-form">
+            <!-- Basic Information Section -->
+            <section class="form-section">
+                <h2 class="section-heading">Basic Information</h2>
+                
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullName" class="required">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name">
+                    <span class="error-message"></span>
+                </div>
+                
+                <!-- Gender -->
+                <div class="form-group">
+                    <label class="required">Gender</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Male">
+                            <span>Male</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Female">
+                            <span>Female</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Other">
+                            <span>Other</span>
+                        </label>
+                    </div>
+                    <span class="error-message"></span>
+                </div>
+                
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email" class="required">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email">
+                    <span class="error-message"></span>
+                </div>
+                
+                <!-- College -->
+                <div class="form-group">
+                    <label for="college" class="required">Select College</label>
+                    <select id="college" name="college">
+                        <option value="">-- Select College --</option>
+                        <option value="Poornima College">Poornima College</option>
+                        <option value="Poornima Institute">Poornima Institute</option>
+                        <option value="Poornima University">Poornima University</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+                
+                <!-- Other College -->
+                <div class="form-group" id="otherCollegeGroup" style="display: none;">
+                    <label for="otherCollege">Enter your college name</label>
+                    <input type="text" id="otherCollege" name="otherCollege" placeholder="Type your college name here">
+                    <span class="error-message"></span>
+                </div>
+                
+                <!-- Year of Study -->
+                <div class="form-group">
+                    <label for="year" class="required">Year of Study</label>
+                    <select id="year" name="year">
+                        <option value="">-- Select Year --</option>
+                        <option value="First Year">First Year</option>
+                        <option value="Second Year">Second Year</option>
+                        <option value="Third Year">Third Year</option>
+                        <option value="Final Year">Final Year</option>
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+            </section>
+            
+            <!-- Poornima Specific Section -->
+            <section class="form-section" id="poornimaSection" style="display: none;">
+                <h2 class="section-heading">If Poornima (Any)</h2>
+                
+                <!-- Residence Type -->
+                <div class="form-group">
+                    <label for="residence" class="required">Residence Type</label>
+                    <select id="residence" name="residence">
+                        <option value="">-- Select Residence Type --</option>
+                        <option value="Hostel">Hostel</option>
+                        <option value="Day Scholar">Day Scholar</option>
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+                
+                <!-- Hostel Name -->
+                <div class="form-group" id="hostelNameGroup" style="display: none;">
+                    <label for="hostelName" class="required">Hostel Name</label>
+                    <input type="text" id="hostelName" name="hostelName" placeholder="Enter your hostel name">
+                    <span class="error-message"></span>
+                </div>
+                
+                <!-- College Registration ID -->
+                <div class="form-group">
+                    <label for="collegeRegID" class="required">College Registration ID</label>
+                    <input type="text" id="collegeRegID" name="collegeRegID" placeholder="Enter your college registration number">
+                    <span class="error-message"></span>
+                </div>
+            </section>
+            
+            <!-- Upload NOC Section -->
+            <section class="form-section">
+                <h2 class="section-heading">Upload NOC</h2>
+                
+                <div class="form-group">
+                    <label for="nocFile" class="required">Upload NOC</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="nocFile" name="nocFile" accept=".pdf,.jpg,.jpeg,.png">
+                        <label for="nocFile" class="file-label">Choose File</label>
+                        <span id="fileName" class="file-name">No file chosen</span>
+                    </div>
+                    <span class="error-message"></span>
+                    <small class="file-hint">Allowed: PDF, JPG, PNG | Max Size: 5 MB</small>
+                </div>
+                
+                <!-- Google Drive Link Option -->
+                <div class="form-group">
+                    <label for="nocDriveLink">Or Enter Google Drive Link</label>
+                    <input type="url" id="nocDriveLink" name="nocDriveLink" placeholder="https://drive.google.com/...">
+                    <span class="error-message"></span>
+                </div>
+            </section>
+            
+            <!-- Interested Events Section -->
+            <section class="form-section">
+                <h2 class="section-heading">Interested Events</h2>
+                
+                <!-- Event Selection -->
+                <div class="form-group">
+                    <label for="event" class="required">Select Interested Event</label>
+                    <select id="event" name="event">
+                        <option value="">-- Select Event --</option>
+                        <option value="RC Car">RC Car</option>
+                        <option value="Robo Soccer">Robo Soccer</option>
+                        <option value="Robo War">Robo War</option>
+                        <option value="MOM">MOM</option>
+                        <option value="Circuitary">Circuitary</option>
+                        <option value="Mini War">Mini War</option>
+                        <option value="Tank War">Tank War</option>
+                        <option value="Spud Gun">Spud Gun</option>
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+                
+                <!-- Team Fields -->
+                <div id="teamFields" style="display: none;">
+                    <!-- Team Leader -->
+                    <div class="form-group">
+                        <label for="teamLeader" class="required">Team Leader Name</label>
+                        <input type="text" id="teamLeader" name="teamLeader" placeholder="Enter team leader name">
+                        <span class="error-message"></span>
+                    </div>
+                    
+                    <!-- Number of Team Members -->
+                    <div class="form-group">
+                        <label for="teamMembersCount" class="required">Number of Team Members</label>
+                        <input type="number" id="teamMembersCount" name="teamMembersCount" min="1" max="10" placeholder="Enter number of members">
+                        <span class="error-message"></span>
+                    </div>
+                    
+                    <!-- Member 1 Name -->
+                    <div class="form-group">
+                        <label for="member1Name">Member 1 Name</label>
+                        <input type="text" id="member1Name" name="member1Name" placeholder="Enter first team member's name">
+                        <span class="error-message"></span>
+                    </div>
+                    
+                    <!-- Member 1 Registration ID -->
+                    <div class="form-group">
+                        <label for="member1RegID">Member 1 Registration ID</label>
+                        <input type="text" id="member1RegID" name="member1RegID" placeholder="Enter first team member's registration ID">
+                        <span class="error-message"></span>
+                    </div>
+                    
+                    <!-- Member 2 Name -->
+                    <div class="form-group">
+                        <label for="member2Name">Member 2 Name</label>
+                        <input type="text" id="member2Name" name="member2Name" placeholder="Enter second team member's name">
+                        <span class="error-message"></span>
+                    </div>
+                    
+                    <!-- Member 2 Registration ID -->
+                    <div class="form-group">
+                        <label for="member2RegID">Member 2 Registration ID</label>
+                        <input type="text" id="member2RegID" name="member2RegID" placeholder="Enter second team member's registration ID">
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Submit Button -->
+            <div class="submit-wrapper">
+                <button type="submit" id="submitBtn" class="submit-btn">SUBMIT</button>
+            </div>
+        </form>
+        
+        <!-- Success Message -->
+        <div id="successMessage" class="success-message" style="display: none;">
+            <h2>✓ Registration Successful!</h2>
+            <p>Thank you for registering. Your registration has been received.</p>
+        </div>
+    </div>
+    
+    <script>
+// DOM Elements
+const form = document.getElementById('registrationForm');
+const collegeSelect = document.getElementById('college');
+const otherCollegeGroup = document.getElementById('otherCollegeGroup');
+const poornimaSection = document.getElementById('poornimaSection');
+const residenceSelect = document.getElementById('residence');
+const hostelNameGroup = document.getElementById('hostelNameGroup');
+const eventSelect = document.getElementById('event');
+const teamFields = document.getElementById('teamFields');
+const nocFile = document.getElementById('nocFile');
+const fileName = document.getElementById('fileName');
+
+// Show/hide dynamic fields based on selections
+collegeSelect.addEventListener('change', function() {
+    const value = this.value;
+    
+    // Show/hide Other College field
+    if (value === 'Other') {
+        otherCollegeGroup.style.display = 'block';
+    } else {
+        otherCollegeGroup.style.display = 'none';
+        document.getElementById('otherCollege').value = '';
+    }
+    
+    // Show/hide Poornima section
+    if (value.includes('Poornima')) {
+        poornimaSection.style.display = 'block';
+    } else {
+        poornimaSection.style.display = 'none';
+        document.getElementById('residence').value = '';
+        document.getElementById('hostelName').value = '';
+        document.getElementById('collegeRegID').value = '';
+        hostelNameGroup.style.display = 'none';
+    }
+});
+
+residenceSelect.addEventListener('change', function() {
+    if (this.value === 'Hostel') {
+        hostelNameGroup.style.display = 'block';
+    } else {
+        hostelNameGroup.style.display = 'none';
+        document.getElementById('hostelName').value = '';
+    }
+});
+
+eventSelect.addEventListener('change', function() {
+    if (this.value) {
+        teamFields.style.display = 'block';
+    } else {
+        teamFields.style.display = 'none';
+        clearTeamFields();
+    }
+});
+
+nocFile.addEventListener('change', function() {
+    if (this.files.length > 0) {
+        fileName.textContent = this.files[0].name;
+        
+        // Validate file size (5MB)
+        const fileSize = this.files[0].size / 1024 / 1024;
+        if (fileSize > 5) {
+            showError(nocFile.parentElement.parentElement, 'File size must be less than 5MB');
+            this.value = '';
+            fileName.textContent = 'No file chosen';
+        } else {
+            clearError(nocFile.parentElement.parentElement);
+        }
+    } else {
+        fileName.textContent = 'No file chosen';
+    }
+});
+
+// Validation functions
+function validateField(field, errorContainer) {
+    const value = field.value.trim();
+    let isValid = true;
+    
+    clearError(errorContainer);
+    
+    // Check if required field is empty
+    if (field.hasAttribute('required') || field.closest('.form-group').querySelector('label.required')) {
+        if (!value) {
+            showError(errorContainer, 'This field is required');
+            isValid = false;
+        }
+    }
+    
+    // Specific validations
+    if (field.type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+            showError(errorContainer, 'Please enter a valid email address');
+            isValid = false;
+        }
+    }
+    
+    if (field.type === 'number' && value) {
+        const num = parseInt(value);
+        if (num < field.min || num > field.max) {
+            showError(errorContainer, `Value must be between ${field.min} and ${field.max}`);
+            isValid = false;
+        }
+    }
+    
+    return isValid;
+}
+
+function validateRadioGroup(groupName, errorContainer) {
+    const radios = document.querySelectorAll(`input[name="${groupName}"]`);
+    const checked = Array.from(radios).some(radio => radio.checked);
+    clearError(errorContainer);
+    
+    if (!checked) {
+        showError(errorContainer, 'Please select an option');
+        return false;
+    }
+    return true;
+}
+
+function validateSelect(select, errorContainer) {
+    clearError(errorContainer);
+    if (!select.value) {
+        showError(errorContainer, 'Please select an option');
+        return false;
+    }
+    return true;
+}
+
+function validateFileUpload(fileInput, errorContainer) {
+    clearError(errorContainer);
+    const driveLink = document.getElementById('nocDriveLink').value.trim();
+    
+    if (!fileInput.files.length && !driveLink) {
+        showError(errorContainer, 'Please upload a file or provide a Google Drive link');
+        return false;
+    }
+    
+    if (driveLink && !isValidURL(driveLink)) {
+        showError(errorContainer.parentElement.parentElement.querySelector('.error-message'), 'Please enter a valid URL');
+        return false;
+    }
+    
+    return true;
+}
+
+function isValidURL(string) {
+    try {
+        new URL(string);
+        return true;
+    } catch (_) {
+        return false;
+    }
+}
+
+function validateCollegeRegID(field, errorContainer) {
+    const value = field.value.trim();
+    clearError(errorContainer);
+    
+    if (!value) {
+        showError(errorContainer, 'This field is required');
+        return false;
+    }
+    
+    // Alphanumeric validation
+    const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+    if (!alphanumericRegex.test(value)) {
+        showError(errorContainer, 'Registration ID must contain only letters and numbers');
+        return false;
+    }
+    
+    return true;
+}
+
+function showError(container, message) {
+    const errorElement = container.querySelector('.error-message');
+    if (errorElement) {
+        errorElement.textContent = message;
+        const input = container.querySelector('input, select');
+        if (input) {
+            input.style.borderColor = '#ef4444';
+        }
+    }
+}
+
+function clearError(container) {
+    const errorElement = container.querySelector('.error-message');
+    if (errorElement) {
+        errorElement.textContent = '';
+        const input = container.querySelector('input, select');
+        if (input) {
+            input.style.borderColor = '#d1d5db';
+        }
+    }
+}
+
+function clearTeamFields() {
+    document.getElementById('teamLeader').value = '';
+    document.getElementById('teamMembersCount').value = '';
+    document.getElementById('member1Name').value = '';
+    document.getElementById('member1RegID').value = '';
+    document.getElementById('member2Name').value = '';
+    document.getElementById('member2RegID').value = '';
+}
+
+// Form submission
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Clear all errors first
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.textContent = '';
+    });
+    document.querySelectorAll('input, select').forEach(el => {
+        el.style.borderColor = '#d1d5db';
+    });
+    
+    // Validate all fields
+    let isValid = true;
+    
+    // Basic Information
+    const fullNameField = document.getElementById('fullName');
+    if (!validateField(fullNameField, fullNameField.closest('.form-group'))) {
+        isValid = false;
+    }
+    
+    const genderContainer = document.querySelector('.radio-label').closest('.form-group');
+    if (!validateRadioGroup('gender', genderContainer)) {
+        isValid = false;
+    }
+    
+    const emailField = document.getElementById('email');
+    if (!validateField(emailField, emailField.closest('.form-group'))) {
+        isValid = false;
+    }
+    
+    const collegeField = document.getElementById('college');
+    if (!validateSelect(collegeField, collegeField.closest('.form-group'))) {
+        isValid = false;
+    }
+    
+    if (document.getElementById('college').value === 'Other') {
+        const otherCollegeField = document.getElementById('otherCollege');
+        if (!validateField(otherCollegeField, otherCollegeField.closest('.form-group'))) {
+            isValid = false;
+        }
+    }
+    
+    const yearField = document.getElementById('year');
+    if (!validateSelect(yearField, yearField.closest('.form-group'))) {
+        isValid = false;
+    }
+    
+    // Poornima specific fields
+    if (document.getElementById('college').value.includes('Poornima')) {
+        if (!validateSelect(residenceSelect, residenceSelect.closest('.form-group'))) {
+            isValid = false;
+        }
+        
+        if (residenceSelect.value === 'Hostel') {
+            const hostelNameField = document.getElementById('hostelName');
+            if (!validateField(hostelNameField, hostelNameField.closest('.form-group'))) {
+                isValid = false;
+            }
+        }
+        
+        const collegeRegIDField = document.getElementById('collegeRegID');
+        if (!validateCollegeRegID(collegeRegIDField, collegeRegIDField.closest('.form-group'))) {
+            isValid = false;
+        }
+    }
+    
+    // NOC upload
+    const nocContainer = nocFile.closest('.form-group');
+    if (!validateFileUpload(nocFile, nocContainer)) {
+        isValid = false;
+    }
+    
+    // Event selection
+    if (!validateSelect(eventSelect, eventSelect.closest('.form-group'))) {
+        isValid = false;
+    }
+    
+    // Team fields
+    if (eventSelect.value) {
+        const teamLeaderField = document.getElementById('teamLeader');
+        if (!validateField(teamLeaderField, teamLeaderField.closest('.form-group'))) {
+            isValid = false;
+        }
+        
+        const teamCountField = document.getElementById('teamMembersCount');
+        if (!validateField(teamCountField, teamCountField.closest('.form-group'))) {
+            isValid = false;
+        }
+    }
+    
+    if (!isValid) {
+        alert('Please fill all required fields correctly before submitting.');
+        return;
+    }
+    
+    // Collect form data
+    const formData = collectFormData();
+    
+    // Send data to backend
+    try {
+        const response = await fetch('/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            showSuccessMessage();
+            form.reset();
+            fileName.textContent = 'No file chosen';
+            otherCollegeGroup.style.display = 'none';
+            poornimaSection.style.display = 'none';
+            hostelNameGroup.style.display = 'none';
+            teamFields.style.display = 'none';
+            clearTeamFields();
+        } else {
+            alert('Error submitting form. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // For standalone version, just show success message
+        showSuccessMessage();
+        form.reset();
+        fileName.textContent = 'No file chosen';
+        otherCollegeGroup.style.display = 'none';
+        poornimaSection.style.display = 'none';
+        hostelNameGroup.style.display = 'none';
+        teamFields.style.display = 'none';
+        clearTeamFields();
+        console.log('Form Data:', formData);
+    }
+});
+
+function collectFormData() {
+    const data = {
+        name: document.getElementById('fullName').value.trim(),
+        gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+        email: document.getElementById('email').value.trim(),
+        college: document.getElementById('college').value,
+        otherCollege: document.getElementById('otherCollege').value.trim(),
+        year: document.getElementById('year').value,
+        residence: document.getElementById('residence').value,
+        hostelName: document.getElementById('hostelName').value.trim(),
+        collegeRegID: document.getElementById('collegeRegID').value.trim(),
+        nocFileLink: document.getElementById('nocDriveLink').value.trim() || (nocFile.files[0] ? `File: ${nocFile.files[0].name}` : ''),
+        event: document.getElementById('event').value,
+        teamLeader: document.getElementById('teamLeader').value.trim(),
+        teamMembersCount: document.getElementById('teamMembersCount').value,
+        member1Name: document.getElementById('member1Name').value.trim(),
+        member1RegID: document.getElementById('member1RegID').value.trim(),
+        member2Name: document.getElementById('member2Name').value.trim(),
+        member2RegID: document.getElementById('member2RegID').value.trim()
+    };
+    
+    return data;
+}
+
+function showSuccessMessage() {
+    const successMsg = document.getElementById('successMessage');
+    form.style.display = 'none';
+    successMsg.style.display = 'block';
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Auto-hide after 5 seconds or allow user to click to register again
+    setTimeout(() => {
+        successMsg.style.display = 'none';
+        form.style.display = 'block';
+    }, 5000);
+}
+
+// Real-time validation on blur
+document.querySelectorAll('input, select').forEach(field => {
+    if (field.type !== 'submit') {
+        field.addEventListener('blur', function() {
+            if (this.type === 'radio') {
+                const container = document.querySelector(`input[name="${this.name}"]`).closest('.radio-group').parentElement;
+                validateRadioGroup(this.name, container);
+            } else {
+                validateField(this, this.closest('.form-group'));
+            }
+        });
+    }
+});
+    </script>
+</body>
+</html>
+
