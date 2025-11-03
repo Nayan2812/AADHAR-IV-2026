@@ -42,6 +42,12 @@
                     <span class="error-message"></span>
                 </div>
                 
+                <!-- Contact -->
+                <div class="form-group">
+                    <label for="contact" class="required">Conatct</label>
+                    <input type="tel" id="contact" name="contact" pattern="[0-9]{10}" placeholder="Enter your contact number">
+                    <span class="error-message"></span>
+                </div>
                 <!-- Email -->
                 <div class="form-group">
                     <label for="email" class="required">Email Address</label>
@@ -71,10 +77,18 @@
                     <label for="otherCollegeGroup" class="required">College Address</label>
                     <input type="text" id="othercollegeGroup" name="othercollegeGroup" placeholder="Enter your college address">
                     <span class="error-message"></span>
+                    <br>
+                    <label for="otherCollegeGroup" class="required">Upload NOC</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="nocFile" name="nocFile" accept=".pdf,.jpg,.jpeg,.png">
+                        <label for="otherCollegeGroup" class="file-label">Choose File</label>
+                        <span id="fileName" class="file-name">No file chosen</span>
+                    </div>
+                    <span class="error-message"></span>
+                    <small class="file-hint">Allowed: PDF, JPG, PNG | Max Size: 5 MB</small>
                 </div>
                 
-                
-                <!-- Year of Study -->
+                <!-- Year of Study
                 <div class="form-group">
                     <label for="year" class="required">Year of Study</label>
                     <select id="year" name="year">
@@ -85,12 +99,11 @@
                         <option value="Final Year">Final Year</option>
                     </select>
                     <span class="error-message"></span>
-                </div>
+                </div> -->
             </section>
             
             <!-- Poornima Specific Section -->
             <section class="form-section" id="poornimaSection" style="display: none;">
-                <h2 class="section-heading">If Poornima (Any)</h2>
                 
                 <!-- Residence Type -->
                 <div class="form-group">
@@ -118,28 +131,7 @@
                 </div>
             </section>
             
-            <!-- Upload NOC Section -->
-            <section class="form-section">
-                <h2 class="section-heading">Upload NOC</h2>
-                
-                <div class="form-group">
-                    <label for="nocFile" class="required">Upload NOC</label>
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="nocFile" name="nocFile" accept=".pdf,.jpg,.jpeg,.png">
-                        <label for="nocFile" class="file-label">Choose File</label>
-                        <span id="fileName" class="file-name">No file chosen</span>
-                    </div>
-                    <span class="error-message"></span>
-                    <small class="file-hint">Allowed: PDF, JPG, PNG | Max Size: 5 MB</small>
-                </div>
-                
-                <!-- Google Drive Link Option -->
-                <div class="form-group">
-                    <label for="nocDriveLink">Or Enter Google Drive Link</label>
-                    <input type="url" id="nocDriveLink" name="nocDriveLink" placeholder="https://drive.google.com/...">
-                    <span class="error-message"></span>
-                </div>
-            </section>
+            
             
             <!-- Interested Events Section -->
             <section class="form-section">
@@ -162,51 +154,14 @@
                     <span class="error-message"></span>
                 </div>
                 
-                <!-- Team Fields -->
-                <div id="teamFields" style="display: none;">
-                    <!-- Team Leader -->
-                    <div class="form-group">
-                        <label for="teamLeader" class="required">Team Leader Name</label>
-                        <input type="text" id="teamLeader" name="teamLeader" placeholder="Enter team leader name">
-                        <span class="error-message"></span>
-                    </div>
-                    
-                    <!-- Number of Team Members -->
-                    <div class="form-group">
-                        <label for="teamMembersCount" class="required">Number of Team Members</label>
-                        <input type="number" id="teamMembersCount" name="teamMembersCount" min="1" max="10" placeholder="Enter number of members">
-                        <span class="error-message"></span>
-                    </div>
-                    
-                    <!-- Member 1 Name -->
-                    <div class="form-group">
-                        <label for="member1Name">Member 1 Name</label>
-                        <input type="text" id="member1Name" name="member1Name" placeholder="Enter first team member's name">
-                        <span class="error-message"></span>
-                    </div>
-                    
-                    <!-- Member 1 Registration ID -->
-                    <div class="form-group">
-                        <label for="member1RegID">Member 1 Registration ID</label>
-                        <input type="text" id="member1RegID" name="member1RegID" placeholder="Enter first team member's registration ID">
-                        <span class="error-message"></span>
-                    </div>
-                    
-                    <!-- Member 2 Name -->
-                    <div class="form-group">
-                        <label for="member2Name">Member 2 Name</label>
-                        <input type="text" id="member2Name" name="member2Name" placeholder="Enter second team member's name">
-                        <span class="error-message"></span>
-                    </div>
-                    
-                    <!-- Member 2 Registration ID -->
-                    <div class="form-group">
-                        <label for="member2RegID">Member 2 Registration ID</label>
-                        <input type="text" id="member2RegID" name="member2RegID" placeholder="Enter second team member's registration ID">
-                        <span class="error-message"></span>
-                    </div>
-                </div>
+                
             </section>
+            <section id="teamFields" class="form-section" style="display: none;">
+  <h2 class="section-heading">Team Details</h2>
+  <div id="teamContainer"></div>
+</section>
+
+
             
             <!-- Submit Button -->
             <div class="submit-wrapper">
